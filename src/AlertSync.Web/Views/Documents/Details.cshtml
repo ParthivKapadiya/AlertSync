@@ -1,0 +1,26 @@
+@model DocumentSample
+@{
+    ViewData["Title"] = "Document Details";
+}
+
+<div class="page-head">
+    <div>
+        <h1>@Model.Name</h1>
+        <p>@Model.Description</p>
+    </div>
+    <div class="page-actions">
+        <button class="btn btn-primary" type="button" disabled>Download</button>
+        <button class="btn btn-outline-danger" type="button" data-confirm="Delete this document?" data-action="@Url.Action("Delete", new { id = Model.Id })">Delete</button>
+    </div>
+</div>
+
+<section class="panel">
+    <dl class="detail-grid">
+        <dt>Type</dt><dd>@Model.Type</dd>
+        <dt>Belongs to</dt><dd>@(Model.FamilyMember ?? "Personal")</dd>
+        <dt>Sample file</dt><dd>@Model.FileLabel</dd>
+        <dt>Size</dt><dd>@Model.SizeLabel</dd>
+        <dt>Uploaded</dt><dd>@Model.UploadedAt.ToString("dd MMM yyyy")</dd>
+    </dl>
+    <p class="hint">Download stays disabled because no private file is stored for this sample card. The final submission will serve the file only to the owner.</p>
+</section>

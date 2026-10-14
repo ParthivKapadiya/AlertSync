@@ -1,0 +1,54 @@
+@model CategoryPageViewModel
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Categories</h1>
+        <p>Suggested groups for reminders. The count is how many sample reminders use that name.</p>
+    </div>
+</div>
+
+<div class="layout-grid">
+    <section class="panel">
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Category</th><th>Description</th><th>Reminders</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <tr>
+                            <td><a class="row-title" asp-controller="Reminders" asp-action="Index" asp-route-category="@category.Name">@category.Name</a></td>
+                            <td>@category.Description</td>
+                            <td>@category.ReminderCount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <section class="panel">
+        <h2>Add a category</h2>
+        <form method="post" asp-action="Create">
+            @Html.AntiForgeryToken()
+            <div class="mb-3">
+                <label class="form-label" asp-for="Form.Name"></label>
+                <input class="form-control" asp-for="Form.Name" />
+                <span class="field-error" asp-validation-for="Form.Name"></span>
+            </div>
+            <div class="mb-3">
+                <label class="form-label" asp-for="Form.Description"></label>
+                <textarea class="form-control" asp-for="Form.Description" rows="3"></textarea>
+                <span class="field-error" asp-validation-for="Form.Description"></span>
+            </div>
+            <button class="btn btn-primary" type="submit">Save category</button>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

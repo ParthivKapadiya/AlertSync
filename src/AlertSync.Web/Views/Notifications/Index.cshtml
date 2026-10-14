@@ -1,0 +1,35 @@
+@model IReadOnlyList<NotificationSample>
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Notifications</h1>
+        <p>Sample messages linked to reminders. Mark read and delete ask for the connected action, then leave the database unchanged.</p>
+    </div>
+    <button class="btn btn-outline-primary" type="button" data-confirm="Mark every notification as read?" data-action="@Url.Action("MarkAllRead")">Mark all read</button>
+</div>
+
+<section class="panel">
+    @foreach (var item in Model)
+    {
+        <div class="list-row">
+            <span>
+                <strong>@item.Message</strong>
+                <small>
+                    <a asp-controller="Reminders" asp-action="Details" asp-route-id="@item.ReminderId">@item.ReminderTitle</a>
+                    · @item.CreatedAt.ToString("dd MMM yyyy, h:mm tt")
+                </small>
+            </span>
+            <span class="row-meta">
+                <partial name="_Badge" model="@(item.IsRead ? "Read" : "Unread")" />
+                @if (!item.IsRead)
+                {
+                    <button class="btn btn-outline-primary" type="button" data-confirm="Mark this notification as read?" data-action="@Url.Action("MarkRead", new { id = item.Id })">Mark read</button>
+                }
+                <button class="btn btn-outline-danger" type="button" data-confirm="Delete this notification?" data-action="@Url.Action("Delete", new { id = item.Id })">Delete</button>
+            </span>
+        </div>
+    }
+</section>

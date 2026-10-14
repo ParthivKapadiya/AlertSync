@@ -1,0 +1,110 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Dashboard</h1>
+        <p>Counts below are calculated from the sample reminders and documents on these screens.</p>
+    </div>
+    <div class="page-actions">
+        <a class="btn btn-outline-primary" asp-controller="Documents" asp-action="Create"><i class="bi bi-upload"></i> Upload document</a>
+        <a class="btn btn-primary" asp-controller="Reminders" asp-action="Create"><i class="bi bi-plus-lg"></i> Add reminder</a>
+    </div>
+</div>
+
+<section class="stat-grid">
+    <a class="stat-card" asp-controller="Reminders" asp-action="Index">
+        <span class="stat-icon"><i class="bi bi-bell"></i></span>
+        <span><strong>@Model.TotalReminders</strong><small>Total reminders</small></span>
+    </a>
+    <a class="stat-card" asp-controller="Reminders" asp-action="Index" asp-route-status="Pending">
+        <span class="stat-icon"><i class="bi bi-clock"></i></span>
+        <span><strong>@Model.Pending</strong><small>Pending tasks</small></span>
+    </a>
+    <a class="stat-card" asp-controller="Reminders" asp-action="Completed">
+        <span class="stat-icon"><i class="bi bi-check-circle"></i></span>
+        <span><strong>@Model.Completed</strong><small>Completed tasks</small></span>
+    </a>
+    <a class="stat-card" asp-controller="Reminders" asp-action="Index" asp-route-status="Overdue">
+        <span class="stat-icon"><i class="bi bi-exclamation-circle"></i></span>
+        <span><strong>@Model.Overdue</strong><small>Overdue tasks</small></span>
+    </a>
+    <a class="stat-card" asp-controller="Documents" asp-action="Index">
+        <span class="stat-icon"><i class="bi bi-folder2"></i></span>
+        <span><strong>@Model.Documents</strong><small>Stored documents</small></span>
+    </a>
+</section>
+
+<div class="layout-grid">
+    <div class="stack">
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Today's reminders</h2>
+                <a asp-controller="Calendar" asp-action="Index">Open calendar</a>
+            </div>
+            @if (Model.Today.Count == 0)
+            {
+                <partial name="_EmptyState" model='("bi-sun", "Nothing due today", "Reminders due today will appear here.", "Add reminder", "Reminders", "Create")' />
+            }
+            else
+            {
+                foreach (var item in Model.Today)
+                {
+                    <a class="list-row" asp-controller="Reminders" asp-action="Details" asp-route-id="@item.Id">
+                        <span><strong>@item.Title</strong><small>@item.DueAt.ToString("dd MMM yyyy, h:mm tt") · @item.Category</small></span>
+                        <span class="row-meta"><partial name="_Badge" model="@item.Priority" /> <partial name="_Badge" model="@item.Status" /></span>
+                    </a>
+                }
+            }
+        </section>
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Upcoming deadlines</h2>
+                <a asp-controller="Reminders" asp-action="Upcoming">View all</a>
+            </div>
+            @foreach (var item in Model.Upcoming)
+            {
+                <a class="list-row" asp-controller="Reminders" asp-action="Details" asp-route-id="@item.Id">
+                    <span><strong>@item.Title</strong><small>@item.DueAt.ToString("dd MMM yyyy, h:mm tt")</small></span>
+                    <span class="row-meta"><partial name="_Badge" model="@item.Priority" /></span>
+                </a>
+            }
+        </section>
+    </div>
+    <div class="stack">
+        <section class="panel">
+            <h2>Quick actions</h2>
+            <a class="quick-link" asp-controller="Reminders" asp-action="Create"><i class="bi bi-plus-lg"></i> Add a reminder</a>
+            <a class="quick-link" asp-controller="Documents" asp-action="Create"><i class="bi bi-upload"></i> Upload a document</a>
+            <a class="quick-link" asp-controller="Calendar" asp-action="Index"><i class="bi bi-calendar3"></i> Open the calendar</a>
+            <a class="quick-link" asp-controller="Family" asp-action="Create"><i class="bi bi-person-plus"></i> Add a family member</a>
+        </section>
+        <section class="panel">
+            <div class="panel-head">
+                <h2>Recent notifications</h2>
+                <a asp-controller="Notifications" asp-action="Index">View all</a>
+            </div>
+            @foreach (var item in Model.Notifications)
+            {
+                <a class="list-row" asp-controller="Reminders" asp-action="Details" asp-route-id="@item.ReminderId">
+                    <span><strong>@item.Message</strong><small>@item.CreatedAt.ToString("dd MMM, h:mm tt")</small></span>
+                    @if (!item.IsRead)
+                    {
+                        <partial name="_Badge" model='@("Unread")' />
+                    }
+                </a>
+            }
+        </section>
+        <section class="panel">
+            <h2>Recently added</h2>
+            @foreach (var item in Model.Recent)
+            {
+                <a class="list-row" asp-controller="Reminders" asp-action="Details" asp-route-id="@item.Id">
+                    <span><strong>@item.Title</strong><small>Added @item.CreatedAt.ToString("dd MMM yyyy")</small></span>
+                </a>
+            }
+        </section>
+    </div>
+</div>

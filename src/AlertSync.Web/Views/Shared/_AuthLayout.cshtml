@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · AlertSync</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="auth-shell">
+        <aside class="auth-aside">
+            <div>
+                <div class="brand" style="padding-left:0;">
+                    <span class="brand-mark"><i class="bi bi-bell-fill"></i></span>
+                    <span><strong>AlertSync</strong><small>Smart Reminder and Digital Asset Management</small></span>
+                </div>
+                <h1>One place for deadlines and family documents.</h1>
+                <p>Track renewals, assignments, and appointments, then keep the related documents together.</p>
+            </div>
+            <ul>
+                <li>Reminders with priority, category, and lead time</li>
+                <li>Calendar, upcoming deadlines, and completed tasks</li>
+                <li>A private locker for personal and family documents</li>
+            </ul>
+        </aside>
+        <main class="auth-panel">
+            <div class="auth-card">
+                <partial name="_Notice" />
+                @RenderBody()
+            </div>
+        </main>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

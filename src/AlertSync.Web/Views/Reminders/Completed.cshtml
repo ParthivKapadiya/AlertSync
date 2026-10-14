@@ -1,0 +1,30 @@
+@model IReadOnlyList<ReminderSample>
+@{
+    ViewData["Title"] = "Completed Tasks";
+    ViewData["ShowCompleted"] = true;
+}
+
+<div class="page-head">
+    <div>
+        <h1>Completed tasks</h1>
+        <p>Reminders marked completed, with the original due date and the completion date.</p>
+    </div>
+</div>
+
+<form class="filter-bar panel" method="get">
+    <div>
+        <label class="form-label" for="q">Search title</label>
+        <input class="form-control" id="q" name="q" value="@ViewBag.Search" />
+    </div>
+    <div>
+        <label class="form-label" for="category">Category</label>
+        <select class="form-select" id="category" name="category" asp-items="@(new SelectList(LayoutSampleCatalog.CategoryNames, ViewBag.Category as string))">
+            <option value="">All</option>
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Apply</button>
+</form>
+
+<section class="panel">
+    <partial name="_Table" model="Model" />
+</section>

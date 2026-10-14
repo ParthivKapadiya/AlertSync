@@ -1,0 +1,34 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    string Active(string targetController, string targetAction, params string[] moreActions)
+    {
+        var actions = new[] { targetAction }.Concat(moreActions);
+        return controller == targetController && actions.Contains(action) ? "is-active" : "";
+    }
+}
+<aside class="sidebar">
+    <a class="brand" asp-controller="Dashboard" asp-action="Index">
+        <span class="brand-mark"><i class="bi bi-bell-fill"></i></span>
+        <span>
+            <strong>AlertSync</strong>
+            <small>Reminders and documents</small>
+        </span>
+    </a>
+    <nav class="side-nav" aria-label="Primary">
+        <a class="side-link @Active("Dashboard", "Index")" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2"></i> Dashboard</a>
+        <a class="side-link @Active("Reminders", "Index", "Create", "Edit", "Details")" asp-controller="Reminders" asp-action="Index"><i class="bi bi-check2-square"></i> My Tasks</a>
+        <a class="side-link @Active("Calendar", "Index")" asp-controller="Calendar" asp-action="Index"><i class="bi bi-calendar3"></i> Calendar</a>
+        <a class="side-link @Active("Reminders", "Upcoming")" asp-controller="Reminders" asp-action="Upcoming"><i class="bi bi-hourglass-split"></i> Upcoming Deadlines</a>
+        <a class="side-link @Active("Reminders", "Completed")" asp-controller="Reminders" asp-action="Completed"><i class="bi bi-check-circle"></i> Completed Tasks</a>
+        <a class="side-link @Active("Categories", "Index")" asp-controller="Categories" asp-action="Index"><i class="bi bi-tags"></i> Categories</a>
+        <a class="side-link @Active("Documents", "Index", "Create", "Details")" asp-controller="Documents" asp-action="Index"><i class="bi bi-folder2"></i> Document Locker</a>
+        <a class="side-link @Active("Family", "Index", "Create", "Edit")" asp-controller="Family" asp-action="Index"><i class="bi bi-people"></i> Family Members</a>
+        <a class="side-link @Active("Notifications", "Index")" asp-controller="Notifications" asp-action="Index"><i class="bi bi-bell"></i> Notifications</a>
+        <a class="side-link @Active("Profile", "Index", "Edit", "ChangePassword")" asp-controller="Profile" asp-action="Index"><i class="bi bi-person"></i> Profile</a>
+        <a class="side-link @Active("Settings", "Index")" asp-controller="Settings" asp-action="Index"><i class="bi bi-gear"></i> Settings</a>
+        <a class="side-link @Active("Help", "Index", "Database")" asp-controller="Help" asp-action="Index"><i class="bi bi-question-circle"></i> Help & About</a>
+        <a class="side-link logout" asp-controller="Account" asp-action="Logout"><i class="bi bi-box-arrow-right"></i> Logout</a>
+    </nav>
+</aside>

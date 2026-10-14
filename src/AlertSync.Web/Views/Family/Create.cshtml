@@ -1,0 +1,18 @@
+@model FamilyFormViewModel
+@{
+    ViewData["Title"] = "Add Family Member";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Add family member</h1>
+        <p>Name and relationship are required. Date of birth and notes are optional.</p>
+    </div>
+    <a class="btn btn-outline-primary" asp-action="Index">Cancel</a>
+</div>
+<form class="panel" method="post" style="max-width:640px;">
+    @Html.AntiForgeryToken()
+    <partial name="_Form" />
+    <button class="btn btn-primary" type="submit">Save member</button>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

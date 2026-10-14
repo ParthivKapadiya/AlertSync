@@ -1,0 +1,66 @@
+@model ReminderFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="field-error span-2"></div>
+<div class="span-2">
+    <label class="form-label" asp-for="Title"></label>
+    <input class="form-control" asp-for="Title" />
+    <span class="field-error" asp-validation-for="Title"></span>
+</div>
+<div class="span-2">
+    <label class="form-label" asp-for="Description"></label>
+    <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+    <span class="field-error" asp-validation-for="Description"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="DueDate"></label>
+    <input class="form-control" asp-for="DueDate" />
+    <span class="field-error" asp-validation-for="DueDate"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="DueTime"></label>
+    <input class="form-control" asp-for="DueTime" />
+    <span class="field-error" asp-validation-for="DueTime"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="Category"></label>
+    <select class="form-select" asp-for="Category">
+        <option value="">Select a category</option>
+        @foreach (var category in LayoutSampleCatalog.CategoryNames)
+        {
+            <option value="@category">@category</option>
+        }
+    </select>
+    <span class="field-error" asp-validation-for="Category"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="Priority"></label>
+    <select class="form-select" asp-for="Priority">
+        <option value="">Select priority</option>
+        @foreach (var priority in LayoutSampleCatalog.Priorities)
+        {
+            <option value="@priority">@priority</option>
+        }
+    </select>
+    <span class="field-error" asp-validation-for="Priority"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="LeadTime"></label>
+    <select class="form-select" asp-for="LeadTime">
+        <option value="">Select reminder timing</option>
+        @foreach (var lead in LayoutSampleCatalog.LeadTimes)
+        {
+            <option value="@lead">@lead</option>
+        }
+    </select>
+    <span class="field-error" asp-validation-for="LeadTime"></span>
+</div>
+<div>
+    <label class="form-label" asp-for="Repeat"></label>
+    <select class="form-select" asp-for="Repeat">
+        @foreach (var repeat in LayoutSampleCatalog.Repeats)
+        {
+            <option value="@repeat">@repeat</option>
+        }
+    </select>
+    <span class="field-error" asp-validation-for="Repeat"></span>
+</div>

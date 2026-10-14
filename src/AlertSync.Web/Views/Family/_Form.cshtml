@@ -1,0 +1,28 @@
+@model FamilyFormViewModel
+<div asp-validation-summary="ModelOnly" class="field-error"></div>
+<div class="mb-3">
+    <label class="form-label" asp-for="Name"></label>
+    <input class="form-control" asp-for="Name" />
+    <span class="field-error" asp-validation-for="Name"></span>
+</div>
+<div class="mb-3">
+    <label class="form-label" asp-for="Relationship"></label>
+    <select class="form-select" asp-for="Relationship">
+        <option value="">Select relationship</option>
+        @foreach (var relationship in LayoutSampleCatalog.Relationships)
+        {
+            <option value="@relationship">@relationship</option>
+        }
+    </select>
+    <span class="field-error" asp-validation-for="Relationship"></span>
+</div>
+<div class="mb-3">
+    <label class="form-label" asp-for="DateOfBirth"></label>
+    <input class="form-control" asp-for="DateOfBirth" />
+    <span class="field-error" asp-validation-for="DateOfBirth"></span>
+</div>
+<div class="mb-3">
+    <label class="form-label" asp-for="Notes"></label>
+    <textarea class="form-control" asp-for="Notes" rows="3"></textarea>
+    <span class="field-error" asp-validation-for="Notes"></span>
+</div>

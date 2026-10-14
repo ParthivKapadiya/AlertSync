@@ -1,0 +1,115 @@
+@model IReadOnlyList<TableDesign>
+@{
+    ViewData["Title"] = "Database Design";
+    var crud = (IReadOnlyList<CrudPlanItem>)ViewBag.CrudPlan;
+    var domain = Model.Where(table => !table.IsIdentityTable).ToList();
+    var identity = Model.Where(table => table.IsIdentityTable).ToList();
+}
+
+<div class="page-head">
+    <div>
+        <h1>Database design</h1>
+        <p>These tables come from the Entity Framework model that the migration creates in SQLite. This page is part of the TCIE-2 explanation.</p>
+    </div>
+</div>
+
+<section class="panel" style="margin-bottom:16px;">
+    <h2>Normalization</h2>
+    <ul>
+        <li>Each reminder stores a category id, not a repeated category description.</li>
+        <li>A document stores a family member id. The member's name lives only on FamilyMembers.</li>
+        <li>Pending and Overdue are not columns. IsCompleted is stored. Overdue means not completed and the due time has passed.</li>
+        <li>ReminderAlerts does not copy the user id. The user always comes from the parent reminder.</li>
+        <li>UserPreferences is its own table so settings are not mixed into the login row. One user has one settings row.</li>
+        <li>A notification points at one alert. The unique index stops a second notification for the same alert.</li>
+    </ul>
+</section>
+
+<section class="panel" style="margin-bottom:16px;">
+    <h2>Relationships and delete rules</h2>
+    <ul>
+        <li>One user has many reminders, categories, notifications, family members, and documents, and one preference row.</li>
+        <li>One category has many reminders. Deleting a category is blocked while a reminder still uses it.</li>
+        <li>One reminder has many alerts and many notifications. Deleting the reminder removes them.</li>
+        <li>One family member has many documents. Deleting the member is blocked while a document still points at them.</li>
+        <li>A document with no family member is a personal document.</li>
+        <li>Alert-to-notification uses SetNull, so there is only one cascade path from a reminder. That keeps a later move to SQL Server possible.</li>
+    </ul>
+</section>
+
+@foreach (var table in domain)
+{
+    <section class="panel" style="margin-bottom:16px;">
+        <h2>@table.Name <span class="muted" style="font-weight:500;">@table.EntityName</span></h2>
+        <div class="table-wrap">
+            <table class="data-table schema-table">
+                <thead>
+                    <tr><th>Column</th><th>Type</th><th>Required</th><th>Key</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var column in table.Columns)
+                    {
+                        <tr>
+                            <td><code>@column.Name</code></td>
+                            <td>@column.StoreType@(column.MaxLength is int length ? $" ({length})" : "")</td>
+                            <td>@(column.IsNullable ? "No" : "Yes")</td>
+                            <td>
+                                @if (column.IsPrimaryKey)
+                                {
+                                    <span>Primary key</span>
+                                }
+                                else if (column.ForeignKeyTo is not null)
+                                {
+                                    <span>FK → @column.ForeignKeyTo</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (table.Indexes.Count > 0)
+        {
+            <p class="hint">Indexes: @string.Join("; ", table.Indexes.Select(index => $"{index.Columns}{(index.IsUnique ? " (unique)" : "")}"))</p>
+        }
+        @if (table.ForeignKeys.Count > 0)
+        {
+            <p class="hint">Delete behavior: @string.Join("; ", table.ForeignKeys.Select(key => $"{key.Columns} → {key.PrincipalTable} ({key.DeleteBehavior})"))</p>
+        }
+    </section>
+}
+
+<section class="panel" style="margin-bottom:16px;">
+    <h2>CRUD plan</h2>
+    <div class="table-wrap">
+        <table class="data-table schema-table">
+            <thead>
+                <tr><th>Entity</th><th>Create</th><th>Read</th><th>Update</th><th>Delete</th><th>Rule</th></tr>
+            </thead>
+            <tbody>
+                @foreach (var item in crud)
+                {
+                    <tr>
+                        <td>@item.Entity</td>
+                        <td>@item.Create</td>
+                        <td>@item.Read</td>
+                        <td>@item.Update</td>
+                        <td>@item.Delete</td>
+                        <td>@item.Rule</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<section class="panel">
+    <h2>Identity tables</h2>
+    <p class="muted">Login, password hash, roles, and tokens use the ASP.NET Core Identity tables. FullName and CreatedAt are extra columns on AspNetUsers.</p>
+    <ul>
+        @foreach (var table in identity)
+        {
+            <li><code>@table.Name</code> — @table.Columns.Count columns</li>
+        }
+    </ul>
+</section>

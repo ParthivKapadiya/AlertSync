@@ -1,0 +1,60 @@
+@model DocumentFormViewModel
+@{
+    ViewData["Title"] = "Upload Document";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Upload document</h1>
+        <p>PDF, JPG, JPEG, and PNG only, up to 5 MB. The file is checked and then discarded in this submission.</p>
+    </div>
+    <a class="btn btn-outline-primary" asp-action="Index">Cancel</a>
+</div>
+
+<form class="panel form-grid" method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="field-error span-2"></div>
+    <div>
+        <label class="form-label" asp-for="DocumentName"></label>
+        <input class="form-control" asp-for="DocumentName" />
+        <span class="field-error" asp-validation-for="DocumentName"></span>
+    </div>
+    <div>
+        <label class="form-label" asp-for="DocumentType"></label>
+        <select class="form-select" asp-for="DocumentType">
+            <option value="">Select a type</option>
+            @foreach (var type in LayoutSampleCatalog.DocumentTypes)
+            {
+                <option value="@type">@type</option>
+            }
+        </select>
+        <span class="field-error" asp-validation-for="DocumentType"></span>
+    </div>
+    <div>
+        <label class="form-label" asp-for="FamilyMember"></label>
+        <select class="form-select" asp-for="FamilyMember">
+            <option value="">Personal document</option>
+            @foreach (var member in LayoutSampleCatalog.Family())
+            {
+                <option value="@member.Name">@member.Name (@member.Relationship)</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label class="form-label" asp-for="File"></label>
+        <input class="form-control" asp-for="File" type="file" accept=".pdf,.jpg,.jpeg,.png" />
+        <span class="field-error" asp-validation-for="File"></span>
+    </div>
+    <div class="span-2">
+        <label class="form-label" asp-for="Description"></label>
+        <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+        <span class="field-error" asp-validation-for="Description"></span>
+    </div>
+    <div class="span-2">
+        <button class="btn btn-primary" type="submit">Check upload</button>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

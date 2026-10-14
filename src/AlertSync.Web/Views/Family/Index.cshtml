@@ -1,0 +1,48 @@
+@model IReadOnlyList<FamilySample>
+@{
+    ViewData["Title"] = "Family Members";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Family members</h1>
+        <p>These people are document folders, not login accounts. Names are fictional.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Add family member</a>
+</div>
+
+<form class="filter-bar panel" method="get">
+    <div>
+        <label class="form-label" for="q">Search</label>
+        <input class="form-control" id="q" name="q" value="@ViewBag.Search" placeholder="Name or relationship" />
+    </div>
+    <button class="btn btn-primary" type="submit">Search</button>
+</form>
+
+@if (Model.Count == 0)
+{
+    <section class="panel">
+        <partial name="_EmptyState" model='("bi-people", "No family members match", "Clear the search or add a member.", "Add family member", "Family", "Create")' />
+    </section>
+}
+else
+{
+    <div class="member-grid">
+        @foreach (var member in Model)
+        {
+            var docs = LayoutSampleCatalog.Documents().Where(document => document.FamilyMember == member.Name).ToList();
+            <article class="panel member-card">
+                <partial name="_Badge" model="@member.Relationship" />
+                <h3>@member.Name</h3>
+                <p class="muted">@(member.DateOfBirth?.ToString("dd MMM yyyy") ?? "Date of birth not set")</p>
+                <p>@member.Notes</p>
+                <p><strong>@docs.Count</strong> linked document@(docs.Count == 1 ? "" : "s")</p>
+                <div class="page-actions">
+                    <a class="btn btn-outline-primary" asp-controller="Documents" asp-action="Index" asp-route-member="@member.Name">View documents</a>
+                    <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@member.Id">Edit</a>
+                    <button class="btn btn-outline-danger" type="button" data-confirm="Delete @member.Name? Members with documents stay blocked." data-action="@Url.Action("Delete", new { id = member.Id })">Delete</button>
+                </div>
+            </article>
+        }
+    </div>
+}

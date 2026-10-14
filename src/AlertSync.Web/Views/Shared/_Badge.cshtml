@@ -1,0 +1,13 @@
+@model string
+@{
+    var kind = Model.ToLowerInvariant() switch
+    {
+        "high" or "overdue" => "danger",
+        "medium" => "warning",
+        "completed" => "success",
+        "pending" or "low" or "unread" => "info",
+        "read" => "success",
+        _ => "neutral"
+    };
+}
+<span class="badge-soft badge-@kind">@Model</span>

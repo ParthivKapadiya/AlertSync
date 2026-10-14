@@ -1,0 +1,35 @@
+@model SettingsFormViewModel
+@{
+    ViewData["Title"] = "Settings";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Settings</h1>
+        <p>Time zone and in-app notifications. These controls match the UserPreferences table.</p>
+    </div>
+</div>
+
+<form class="panel" method="post" style="max-width:640px;">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label class="form-label" asp-for="TimeZone"></label>
+        <select class="form-select" asp-for="TimeZone">
+            @foreach (var zone in LayoutSampleCatalog.TimeZones)
+            {
+                <option value="@zone">@zone</option>
+            }
+        </select>
+        <span class="field-error" asp-validation-for="TimeZone"></span>
+    </div>
+    <div class="mb-3 check-row">
+        <input asp-for="InAppNotificationsEnabled" />
+        <label asp-for="InAppNotificationsEnabled"></label>
+    </div>
+    <p class="hint">Password changes are on the profile screen. Email and SMS alerts are not part of this submission.</p>
+    <div class="page-actions">
+        <button class="btn btn-primary" type="submit">Save settings</button>
+        <a class="btn btn-outline-primary" asp-controller="Profile" asp-action="ChangePassword">Change password</a>
+    </div>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

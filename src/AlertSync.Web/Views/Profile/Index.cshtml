@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Profile</h1>
+        <p>The name on this layout is the team lead's display name. It is not loaded from a signed-in account.</p>
+    </div>
+    <div class="page-actions">
+        <a class="btn btn-primary" asp-action="Edit">Edit profile</a>
+        <a class="btn btn-outline-primary" asp-action="ChangePassword">Change password</a>
+    </div>
+</div>
+
+<section class="panel" style="max-width:720px;">
+    <dl class="detail-grid">
+        <dt>Full name</dt><dd>@LayoutSampleCatalog.DisplayName</dd>
+        <dt>Email</dt><dd>@LayoutSampleCatalog.Email</dd>
+        <dt>Phone</dt><dd>Not set</dd>
+        <dt>Time zone</dt><dd>Asia/Kolkata</dd>
+    </dl>
+</section>

@@ -1,0 +1,32 @@
+@model ReminderSample
+@{
+    ViewData["Title"] = "Reminder Details";
+}
+
+<div class="page-head">
+    <div>
+        <h1>@Model.Title</h1>
+        <p>@Model.Description</p>
+    </div>
+    <div class="page-actions">
+        <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+        @if (!Model.IsCompleted)
+        {
+            <button class="btn btn-primary" type="button" data-confirm="Mark this reminder completed?" data-action="@Url.Action("Complete", new { id = Model.Id })">Mark completed</button>
+        }
+        <button class="btn btn-outline-danger" type="button" data-confirm="Delete this reminder?" data-action="@Url.Action("Delete", new { id = Model.Id })">Delete</button>
+    </div>
+</div>
+
+<section class="panel">
+    <dl class="detail-grid">
+        <dt>Due</dt><dd>@Model.DueAt.ToString("dd MMM yyyy, h:mm tt")</dd>
+        <dt>Category</dt><dd>@Model.Category</dd>
+        <dt>Priority</dt><dd><partial name="_Badge" model="@Model.Priority" /></dd>
+        <dt>Status</dt><dd><partial name="_Badge" model="@Model.Status" /></dd>
+        <dt>Remind me</dt><dd>@Model.LeadTime</dd>
+        <dt>Repeat</dt><dd>@Model.Repeat</dd>
+        <dt>Created</dt><dd>@Model.CreatedAt.ToString("dd MMM yyyy")</dd>
+        <dt>Completed</dt><dd>@(Model.CompletedAt?.ToString("dd MMM yyyy") ?? "Not completed")</dd>
+    </dl>
+</section>

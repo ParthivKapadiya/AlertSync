@@ -1,0 +1,76 @@
+@{
+    ViewData["Title"] = "Help & About";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Help & About</h1>
+        <p>AlertSync is a smart reminder and digital asset manager. Keep deadlines and important documents in one place.</p>
+    </div>
+    <a class="btn btn-primary" asp-controller="Reminders" asp-action="Create"><i class="bi bi-plus-lg"></i> Add reminder</a>
+</div>
+
+<div class="layout-grid">
+    <div class="stack">
+        <section class="panel">
+            <h2>What AlertSync does</h2>
+            <p>People miss insurance renewals, vehicle PUC dates, warranties, EMIs, assignments, exams, and appointments. The papers for those dates are often spread across files, photo galleries, and email.</p>
+            <p class="mb-0">AlertSync brings the date and the document together. You can see what is due, what is overdue, and what is finished, then open the matching file from the locker.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Create a reminder</h2>
+            <ol class="mb-0">
+                <li>Open <a asp-controller="Reminders" asp-action="Index">My Tasks</a> and choose Add reminder.</li>
+                <li>Enter a title and, if you want, a short description.</li>
+                <li>Set the due date and time.</li>
+                <li>Choose a category, a priority, when to be reminded, and whether it repeats.</li>
+                <li>Save. The reminder then appears on My Tasks, Upcoming Deadlines, and the <a asp-controller="Calendar" asp-action="Index">calendar</a>.</li>
+            </ol>
+        </section>
+
+        <section class="panel">
+            <h2>Reminder timing</h2>
+            <p>Choose how early AlertSync should notify you:</p>
+            <ul>
+                <li>30 minutes before</li>
+                <li>1 hour before</li>
+                <li>1 day before</li>
+                <li>3 days before</li>
+                <li>1 week before</li>
+                <li>1 month before</li>
+            </ul>
+            <p class="mb-0">Priority is Low, Medium, or High. A reminder stays Pending until its due time. After that it is Overdue until you mark it completed. Completed items move to <a asp-controller="Reminders" asp-action="Completed">Completed Tasks</a>, with the original due date and the day you finished them.</p>
+        </section>
+
+        <section class="panel">
+            <h2>Notifications</h2>
+            <p>When the chosen lead time arrives, AlertSync adds a notification for that reminder. Open <a asp-controller="Notifications" asp-action="Index">Notifications</a> from the sidebar or the bell in the top bar. The bell shows how many are unread.</p>
+            <p class="mb-0">Each notification names the reminder and the time it was created. Open it to see the reminder, mark it read, mark all as read, or delete it. A notification is sent once for that scheduled time, so the same reminder does not pile up duplicates.</p>
+        </section>
+    </div>
+
+    <div class="stack">
+        <section class="panel">
+            <h2>Upload a document</h2>
+            <ol class="mb-0">
+                <li>Open the <a asp-controller="Documents" asp-action="Index">Document Locker</a> and choose Upload document.</li>
+                <li>Give the document a name and a type, such as insurance, a driving licence, a certificate, or a medical paper.</li>
+                <li>Choose a PDF, JPG, JPEG, or PNG file of 5 MB or less.</li>
+                <li>Leave the family member blank if the file is yours. Save it to the locker, then search or filter by type.</li>
+            </ol>
+        </section>
+
+        <section class="panel">
+            <h2>Family documents</h2>
+            <p>A family member is a folder for someone else's papers, not a separate login. Add them from <a asp-controller="Family" asp-action="Index">Family Members</a> with a name and relationship, such as father, mother, brother, sister, grandfather, grandmother, or other.</p>
+            <p class="mb-0">When you upload, pick that person to attach the file to them. On the locker, filter by a family member to see only their documents, or choose Personal for files that belong to you. You can open a member and jump straight to their documents.</p>
+        </section>
+
+        <section class="panel">
+            <h2>About</h2>
+            <p>AlertSync was built by Parthiv Kapadiya, Krish Raiyani, and Nandish Dholariya.</p>
+            <p class="mb-0">Use the dashboard for a snapshot of today, upcoming deadlines, and recent notifications. Categories group reminders so insurance, college work, vehicles, and health stay easy to find.</p>
+        </section>
+    </div>
+</div>

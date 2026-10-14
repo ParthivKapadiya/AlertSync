@@ -1,0 +1,66 @@
+@model IReadOnlyList<DocumentSample>
+@{
+    ViewData["Title"] = "Document Locker";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Document locker</h1>
+        <p>Personal documents and family documents are listed separately. These cards are fictional samples.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-upload"></i> Upload document</a>
+</div>
+
+<form class="filter-bar panel" method="get">
+    <div>
+        <label class="form-label" for="q">Search name</label>
+        <input class="form-control" id="q" name="q" value="@ViewBag.Search" />
+    </div>
+    <div>
+        <label class="form-label" for="type">Type</label>
+        <select class="form-select" id="type" name="type" asp-items="@(new SelectList(LayoutSampleCatalog.DocumentTypes, ViewBag.Type as string))">
+            <option value="">All types</option>
+        </select>
+    </div>
+    <div>
+        <label class="form-label" for="member">Belongs to</label>
+        <select class="form-select" id="member" name="member">
+            <!option value="" @(string.IsNullOrEmpty(ViewBag.Member as string) ? "selected" : null)>Everyone</!option>
+            <!option value="personal" @((ViewBag.Member as string) == "personal" ? "selected" : null)>Personal</!option>
+            @foreach (var member in LayoutSampleCatalog.Family())
+            {
+                <!option value="@member.Name" @((ViewBag.Member as string) == member.Name ? "selected" : null)>@member.Name</!option>
+            }
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Apply</button>
+</form>
+
+<section class="panel">
+    @if (Model.Count == 0)
+    {
+        <partial name="_EmptyState" model='("bi-folder2", "No documents match", "Try another filter or upload a sample file to check the form.", "Upload document", "Documents", "Create")' />
+    }
+    else
+    {
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Name</th><th>Type</th><th>Belongs to</th><th>Size</th><th>Uploaded</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><a class="row-title" asp-action="Details" asp-route-id="@item.Id">@item.Name</a></td>
+                            <td>@item.Type</td>
+                            <td>@(item.FamilyMember ?? "Personal")</td>
+                            <td>@item.SizeLabel</td>
+                            <td>@item.UploadedAt.ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

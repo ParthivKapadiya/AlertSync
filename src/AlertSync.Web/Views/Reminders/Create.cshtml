@@ -1,0 +1,25 @@
+@model ReminderFormViewModel
+@{
+    ViewData["Title"] = "Add Reminder";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Add reminder</h1>
+        <p>Title, due date, category, priority, reminder timing, and repeat.</p>
+    </div>
+    <a class="btn btn-outline-primary" asp-action="Index">Cancel</a>
+</div>
+
+<form class="panel form-grid" method="post">
+    @Html.AntiForgeryToken()
+    <partial name="_Form" model="Model" />
+    <div class="span-2 page-actions">
+        <button class="btn btn-primary" type="submit">Save reminder</button>
+        <a class="btn btn-outline-primary" asp-action="Index">Back to tasks</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

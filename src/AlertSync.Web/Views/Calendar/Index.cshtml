@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Calendar";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Calendar</h1>
+        <p>Month, week, and day views. Click an event to open the reminder details screen.</p>
+    </div>
+    <a class="btn btn-primary" asp-controller="Reminders" asp-action="Create">Add reminder</a>
+</div>
+
+<div class="legend">
+    <span><i class="dot dot-high"></i>High</span>
+    <span><i class="dot dot-medium"></i>Medium</span>
+    <span><i class="dot dot-low"></i>Low</span>
+    <span><i class="dot dot-completed"></i>Completed</span>
+</div>
+
+<div class="calendar-shell">
+    <div id="calendar"></div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/fullcalendar/index.global.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendar = new FullCalendar.Calendar(document.getElementById("calendar"), {
+                initialView: "dayGridMonth",
+                height: "auto",
+                headerToolbar: {
+                    left: "prev,next today",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek,timeGridDay"
+                },
+                events: "@Url.Action("Events", "Calendar")",
+                eventClick: function (info) {
+                    if (info.event.url) {
+                        info.jsEvent.preventDefault();
+                        window.location.href = info.event.url;
+                    }
+                }
+            });
+            calendar.render();
+        });
+    </script>
+}

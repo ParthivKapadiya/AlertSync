@@ -1,0 +1,49 @@
+@model ReminderListViewModel
+@{
+    ViewData["Title"] = "My Tasks";
+}
+
+<div class="page-head">
+    <div>
+        <h1>My Tasks</h1>
+        <p>Search and filter the sample reminders. Each title opens its details screen.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create"><i class="bi bi-plus-lg"></i> Add reminder</a>
+</div>
+
+<form class="filter-bar panel" method="get">
+    <div>
+        <label class="form-label" for="q">Search title</label>
+        <input class="form-control" id="q" name="q" value="@Model.Search" placeholder="Insurance, assignment..." />
+    </div>
+    <div>
+        <label class="form-label" for="category">Category</label>
+        <select class="form-select" id="category" name="category" asp-items="@(new SelectList(LayoutSampleCatalog.CategoryNames, Model.Category))">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div>
+        <label class="form-label" for="priority">Priority</label>
+        <select class="form-select" id="priority" name="priority" asp-items="@(new SelectList(LayoutSampleCatalog.Priorities, Model.Priority))">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div>
+        <label class="form-label" for="status">Status</label>
+        <select class="form-select" id="status" name="status" asp-items="@(new SelectList(LayoutSampleCatalog.Statuses, Model.Status))">
+            <option value="">All</option>
+        </select>
+    </div>
+    <div>
+        <label class="form-label" for="sort">Sort</label>
+        <select class="form-select" id="sort" name="sort">
+            <!option value="due" @(Model.Sort != "title" ? "selected" : null)>Due date</!option>
+            <!option value="title" @(Model.Sort == "title" ? "selected" : null)>Title</!option>
+        </select>
+    </div>
+    <button class="btn btn-primary" type="submit">Apply</button>
+</form>
+
+<section class="panel">
+    <partial name="_Table" model="Model.Items" />
+</section>

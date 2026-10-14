@@ -1,0 +1,10 @@
+@model (string Icon, string Title, string Message, string? ActionText, string? Controller, string? Action)
+<div class="empty-state">
+    <i class="bi @Model.Icon"></i>
+    <h2>@Model.Title</h2>
+    <p>@Model.Message</p>
+    @if (!string.IsNullOrEmpty(Model.ActionText))
+    {
+        <a class="btn btn-primary" asp-controller="@Model.Controller" asp-action="@Model.Action">@Model.ActionText</a>
+    }
+</div>

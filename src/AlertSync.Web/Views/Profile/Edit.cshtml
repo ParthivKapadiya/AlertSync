@@ -1,0 +1,28 @@
+@model ProfileFormViewModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Edit profile</h1>
+        <p>Update the name and phone number shown on the profile screen.</p>
+    </div>
+    <a class="btn btn-outline-primary" asp-action="Index">Cancel</a>
+</div>
+<form class="panel" method="post" style="max-width:640px;">
+    @Html.AntiForgeryToken()
+    <div class="mb-3">
+        <label class="form-label" asp-for="FullName"></label>
+        <input class="form-control" asp-for="FullName" />
+        <span class="field-error" asp-validation-for="FullName"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="PhoneNumber"></label>
+        <input class="form-control" asp-for="PhoneNumber" />
+        <span class="field-error" asp-validation-for="PhoneNumber"></span>
+    </div>
+    <p class="hint">Email stays on the account and is changed through a separate verified flow in the final submission.</p>
+    <button class="btn btn-primary" type="submit">Save profile</button>
+</form>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

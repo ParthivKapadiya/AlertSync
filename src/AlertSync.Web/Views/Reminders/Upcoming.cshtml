@@ -1,0 +1,15 @@
+@model IReadOnlyList<ReminderSample>
+@{
+    ViewData["Title"] = "Upcoming Deadlines";
+}
+
+<div class="page-head">
+    <div>
+        <h1>Upcoming deadlines</h1>
+        <p>Open reminders, nearest due date first. Overdue items stay on My Tasks.</p>
+    </div>
+    <a class="btn btn-primary" asp-action="Create">Add reminder</a>
+</div>
+<section class="panel">
+    <partial name="_Table" model="Model" />
+</section>

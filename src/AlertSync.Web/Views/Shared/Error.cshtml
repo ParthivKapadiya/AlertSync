@@ -1,0 +1,13 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Something went wrong";
+}
+<div class="panel">
+    <h1 class="h3">Something went wrong</h1>
+    <p class="muted">The page could not be completed. If this keeps happening, tell your mentor the request id below.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> <code>@Model.RequestId</code></p>
+    }
+    <a class="btn btn-primary" asp-controller="Dashboard" asp-action="Index">Back to dashboard</a>
+</div>
